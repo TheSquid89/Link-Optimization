@@ -1,0 +1,3 @@
+../Src/Servo_Move.c:18:6:Motor_Position	1
+../Src/Servo_Move.c:27:6:control_X	1
+../Src/Servo_Move.c:40:6:control_Y	1
