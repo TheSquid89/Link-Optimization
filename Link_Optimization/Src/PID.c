@@ -9,23 +9,23 @@
 
 
 // PID Controller Parameters
-float KP = 1.0;   // Proportional gain
+float KP = 25.0;   // Proportional gain
 float KI = .01;   // Integral gain changed from .1
-float KD = .001;  // Derivative gain changed from .01
-float DT = 1;  // Time step (sampling time)
+float KD = .01;  // Derivative gain changed from .01
+float DT = .01;  // Time step (sampling time)
 
 // PID Controller Variables
-int error_x = 0.;
-int prev_error_x = 0.;
-int integral_x = 0.;
-int derivative_x = 0.;
-int output_x = 0.;
+float error_x = 0.;
+float prev_error_x = 0.;
+float integral_x = 0.;
+float derivative_x = 0.;
+float output_x = 0.;
 
-int error_y = 0.;
-int prev_error_y = 0.;
-int integral_y = 0.;
-int derivative_y = 0.;
-int output_y = 0.;
+float error_y = 0.;
+float prev_error_y = 0.;
+float integral_y = 0.;
+float derivative_y = 0.;
+float output_y = 0.;
 
 // Target Position (desired setpoint)
 /*********xPos_abs***********/
@@ -51,13 +51,16 @@ int PID_Controller_X(int xCmd, int xPos) {
     // Update previous error
     prev_error_x = error_x;
 
-    TIM2->CCR1 = output_x;
+    xCmd += output_x;
     }
 }
 
 int PID_Controller_Y(int yCmd, int yPos)
 {
 	  error_y = yCmd - yPos;
+
+	  if(error_y != 0)
+	  {
 
 	  integral_y += error_y * DT;
 
@@ -67,5 +70,6 @@ int PID_Controller_Y(int yCmd, int yPos)
 
 	  prev_error_y = error_y;
 
-	  return output_y;
+	  yCmd += output_y;
+	  }
 }

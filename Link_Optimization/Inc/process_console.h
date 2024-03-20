@@ -10,7 +10,6 @@
 #include "stm32f4xx.h"
 #include "Servo_Move.h"
 #include "scanning_function.h"
-#include "PID.h"
 #include <stdio.h>
 
 extern int xCmd;
@@ -27,7 +26,7 @@ char kbhit(void);
 #ifndef PROCESS_CONSOLE_H_
 #define PROCESS_CONSOLE_H_
 
-extern uint8_t manual_mode;
+extern uint8_t mode;
 
 
 #endif /* PROCESS_CONSOLE_H_ */

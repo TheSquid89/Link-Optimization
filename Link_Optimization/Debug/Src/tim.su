@@ -1,3 +1,3 @@
 ../Src/tim.c:15:6:tim2_pa0_pa1_pwm_init	4	static
 ../Src/tim.c:71:6:tim2_pa0_pa1_pwm_set_dutycycle	16	static
-../Src/tim.c:90:6:pseudo_delay	16	static
+../Src/tim.c:91:6:pseudo_delay	16	static

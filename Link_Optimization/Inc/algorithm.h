@@ -13,10 +13,10 @@
 
 uint32_t Read_RSSI();
 int random_index(int min, int max);
+uint32_t Average_Rssi(void);
+extern int rssi_old;
+extern int rssi_new;
 
-extern int RSSI_OLD;
-extern int RSSI_NEW;
 
-extern int rssi;
 
 #endif /* ALGORITHM_H_ */

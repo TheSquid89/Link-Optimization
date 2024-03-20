@@ -5,8 +5,6 @@
  *      Author: A
  */
 
-#include "tim.h"
-#include "Servo_Move.h"
 
 
 
@@ -17,8 +15,8 @@
 #include "Servo_Move.h"
 #include "algorithm.h"
 
-extern int output_x;
-extern int output_y;
+extern float output_x;
+extern float output_y;
 extern float KP;
 extern float KI;
 extern float KD;

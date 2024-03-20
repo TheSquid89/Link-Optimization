@@ -44,7 +44,7 @@ void tim2_pa0_pa1_pwm_init(void)
 	/*set timer prescaler*/
 	TIM2->PSC = 80;  // 16 000 000 no divider = 16 000 000
 	/*set auto reload value*/
-	TIM2->ARR = 400 - 1; //16 000 000 / 100 = 160 000
+	TIM2->ARR = 3250 - 1; //16 000 000 / 100 = 160 000
 	/*reset the timer count*/
 	TIM2->CNT = 0;
 	/*Set PA1 (channel 2) and PA0 (channel 1) to 110 : PWM mode 1 finding OC1M (CH1) and OC2M (CH2) in the reference manual under CCMR1*/
@@ -81,6 +81,7 @@ void tim2_pa0_pa1_pwm_set_dutycycle(uint8_t ch, uint32_t dutycycle)
 			break;
 		case 2:
 			TIM2->CCR2 = dutycycle;
+			break;
 		default:
 			break;
 	}
@@ -89,5 +90,5 @@ void tim2_pa0_pa1_pwm_set_dutycycle(uint8_t ch, uint32_t dutycycle)
 
 void pseudo_delay(void)
 {
-	for(int i=0;i<50000;i++){}
+	for(int i=0;i<500000;i++){}
 }
