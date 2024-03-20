@@ -5,70 +5,33 @@
  *      Author: Adam Robinson
  *
  */
-
 #include "stm32f4xx.h"
-#include "systick.h"
 
-volatile uint32_t msTicks;
+#define SYSTICK_LOAD_VALUE				16000
+#define CTRL_ENABLE						(1U<<0)
+#define CTRL_CLKSRC						(1U<<2)
+#define CTRL_COUNTFLAG					(1U<<16)
 
+void systickDelayMs(int delay)
+{
+		/*configure systick */
+	/*reload with number of clocks per millisecond*/
+	SysTick->LOAD = SYSTICK_LOAD_VALUE;
 
-//******************************************************************************************
-// Initialize SysTick
-//******************************************************************************************
-void SysTick_Init(void){
-	// The RCC feeds the Cortex System Timer (SysTick) external clock with the AHB clock
-	// (HCLK) divided by 8. The SysTick can work either with this clock or with the Cortex clock
-	// (HCLK), configurable in the SysTick Control and Status Register.
-
-	//  SysTick Control and Status Register
-	SysTick->CTRL = 0;										// Disable SysTick IRQ and SysTick Counter
-
-	// SysTick Reload Value Register - Note: HCLK = 80MHz (no divide by 8)
-	SysTick->LOAD = 16000000 / 50;    // 1ms, Default clock
-
-	// SysTick Current Value Register
+	/*clear systick current value register */
 	SysTick->VAL = 0;
 
-	NVIC_SetPriority(SysTick_IRQn, 1);		// Set Priority to 1
-	NVIC_EnableIRQ(SysTick_IRQn);					// Enable EXTI0_1 interrupt in NVIC
+	 /* enable systick and select internal clock source  */
+	SysTick->CTRL = CTRL_ENABLE | CTRL_CLKSRC;
 
-	// Enables SysTick exception request
-	// 1 = counting down to zero asserts the SysTick exception request
-	// 0 = counting down to zero does not assert the SysTick exception request
-	SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+	for(int i=0;i<delay;i++)
+	{
+		//wait until count flag is set
+		while((SysTick->CTRL & CTRL_COUNTFLAG) == 0)
+		{
 
-	// Select processor clock
-	// 1 = processor clock;  0 = external clock
-	SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
-
-	// Enable SysTick IRQ and SysTick Timer
-	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
-}
-
-
-
-
-//******************************************************************************************
-// SysTick Interrupt Handler
-//******************************************************************************************
-void SysTick_Handler(void){
-	msTicks++;
-	heartbeat = true;
-}
-
-//******************************************************************************************
-// Delay in ms
-//******************************************************************************************
-void delay (uint32_t T){
-	msTicks = 0;
-  while ((msTicks) < T);
-}
-
-
-//******************************************************************************************
-// Fetch the ms tick counter value
-//******************************************************************************************
-uint32_t get_tick(){
-	return msTicks;
+		}
+		SysTick->CTRL = 0;
+	}
 }
 

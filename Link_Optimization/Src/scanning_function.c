@@ -8,24 +8,49 @@
 #include "scanning_function.h"
 #include "tim.h"
 #include "uart.h"
-#include "algorithm.h"
 
 
-
-void scanning_function(void){
-
-	for(xPos = 91; xPos < 400;)
+void scanning_function(void)
+{
+	for(int x = -25;x<400;)
 	{
-		xPos = xPos + 20;
-		TIM2->CCR1 = xPos;
-		pseudo_delay();
-		for(yPos = 190; yPos <230; yPos++)
-		{
-			yPos = yPos + 5;
-			TIM2->CCR2 = yPos;
-			pseudo_delay();
-		}
-		pseudo_delay();
-	}
+		TIM2->CCR2 = x;
+	//	printf("X Value: %i\n\r", x);
+			for(int y = 120; y<400;y++)
+			{
+				TIM2->CCR1 = y;
+				pseudo_delay();
+		//		printf("Y Value: %i", y);
+				if(y==390)
+				{
 
+					break;
+					pseudo_delay();
+				}
+			}
+		x=x+2;
+			if(x==25)
+			{
+				break;
+				pseudo_delay();
+			}
+	}
+	for(int x=400;x>-25;)
+	{
+		TIM2->CCR2 = x;
+			for(int y = 80; y<400;y++)
+			{
+				TIM2->CCR1 = y;
+				pseudo_delay();
+					if(y==180)
+					{
+						break;
+						pseudo_delay();
+					}
+				pseudo_delay();
+			}
+
+		x = x-10;
+
+	}
 }

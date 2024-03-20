@@ -19,7 +19,14 @@ static uint16_t compute_uart_BD(uint32_t PeriphClk, uint32_t BaudRate);
 
 void uart2_write(int ch);
 
+char kbhit(void)
+{
+	while(USART2->SR & SR_RXNE)
+	{
 
+	}
+	return USART2->DR;
+}
 
 char uart2_read(void)
 {
@@ -29,15 +36,6 @@ char uart2_read(void)
 	/* read data */
 	return USART2->DR;
 }
-
-char kbhit(void)
-{
-	/*make sure the transmit data register is not empty RXNE flag*/
-	//to read a register we use the & operation
-
-	return (USART2->SR & SR_RXNE);
-}
-
 
 int __io_putchar(int ch) //allows printf to function calling the uart2_write(ch)
 {
@@ -94,6 +92,39 @@ void uart2_rxtx_init(void)
 
 
 
+
+void uart2_tx_init(void)
+{
+	/* ************* configure uart gpio pin ************/
+	 //1. enable clock access to gpio a
+	RCC->AHB1ENR |= GPIOAEN;
+	 // 2. set PA2 mode to alternate function mode
+	GPIOA->MODER &= ~(1U<<4);
+	GPIOA->MODER |= (1U<<5);
+	 // 3. set PA2 alternate function type to UART_TX (AF07)
+	GPIOA->AFR[0] |= (1U<<8);
+	GPIOA->AFR[0] |= (1U<<9);
+	GPIOA->AFR[0] |= (1U<<10);
+	GPIOA->AFR[0] &= ~(1U<<11);
+
+	/************** configure uart gpio pin ************/
+	//Enable clock access to uart2
+	RCC->APB1ENR |=UART2EN;
+	//configure baudrate (there is an equation which is the bus frequency)
+	uart_set_baudrate(USART2, APB1_CLK, UART_BAUDRATE);
+	//configure the transfer direction
+	USART2->CR1 = CR1_TE;
+	//enable uart module
+	USART2->CR1 |= CR1_UE;		//the OR operator (|) keeps all 32 bits the same and only changes 13
+								//if the = operator is used than it will set all but 13 to zero and change only 13
+
+
+}
+
+void USART_Delay(uint32_t us) {
+	uint32_t time = 100*us/7;
+	while(--time);
+}
 
 
 

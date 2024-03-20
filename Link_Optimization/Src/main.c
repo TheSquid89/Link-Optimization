@@ -1,97 +1,39 @@
 #include "tim.h"
 #include "uart.h"
-#include "uart1.h"
-#include "systick.h"
-#include "PID.h"
-#include "algorithm.h"
 #include "stm32f4xx.h"
-#include "Servo_Move.h"
 #include <stdio.h>
 #include "scanning_function.h"
-#include "process_console.h"
-#include <math.h>
-#include <stdint.h>
-#include <stdbool.h>
-
 
 #define GPIOAEN			(1U<<0)
 #define PIN5			(1U<<5)
 #define LED				PIN5
 
 
-//void pseudo_delay(void);
-//void tim2_pa0_pa1_pwm_set_dutycycle(uint8_t ch, uint32_t dutycycle);
-void uart2_rxtx_init(void);
-char kbhit(void);
-//int random_index(int min, int max);
-
-int rssi;
-int xPos = 80;
-int yPos = 190;
-int RSSI_OLD;
-int RSSI_NEW;
-int xPos_abs;
-int yPos_abs;
-int Y;
-int y_Var = 2.;
-int y_Positioning;
-//signed char d;
-int yCCR;
-volatile bool heartbeat;
+void pseudo_delay(void);
+void tim2_pa0_pa1_pwm_set_dutycycle(uint8_t ch, uint32_t dutycycle);
+void uart2_tx_init(void);
+//void scanning_function(void);
 
 
 
-
-int main(void)
+int main()
 {
-
-	uint16_t count = 0;
+	/*init pwm at pa0 and pa1 */
 	tim2_pa0_pa1_pwm_init();
-	tim2_pa0_pa1_pwm_set_dutycycle(1,50);
-	tim2_pa0_pa1_pwm_set_dutycycle(2,50);
-	uart2_rxtx_init();
-	SysTick_Init();
-	kbhit();
-	Uart1_Init();
-	SysTick_Handler();
-	RCC->AHB1ENR |= GPIOAEN;
-	GPIOA->MODER |= (1U<<10);
-	GPIOA->MODER &= ~(1U<<11);
+	tim2_pa0_pa1_pwm_set_dutycycle(1,100);
+	tim2_pa0_pa1_pwm_set_dutycycle(2,100);
+	uart2_tx_init();
 
-	printf("Welcome to Link Optimization\n\r");
+
+	printf("welcome");
+
 	while(1)
 	{
 
-		if(heartbeat == true)	//Utilization of hardware clock SysTick by interrupt
-		{
-			heartbeat = false;	//Sets conditional statement false which is set true in the interrupt handler
-			count++;	//increments the counter
-			if((count % 50) == 0)	//Conditional statement that flashes LED2 every 50 ms
-			{
-			GPIOA->ODR ^= LED;
-			}
-			Read_RSSI(); 	//Reads RSSI_NEW value
-			control_X(); 	// First process of PID algorithm in X axis
-			PID_Controller_X(xCmd, xPos);
-//			printf("xPos: %i\n\r", xPos);
-			Motor_Position();
-			control_Y();
-//			printf("yPos: %i\n\r", yPos);
-
-			if (!manual_mode) {
-				Motor_Position(); 	//Debug process which gets stuck in this loop and stops all function
-			}
-
-		}
-	process_console();	//Parsing which reads a keyboard input for manually setting different functions
+		printf("check");
 
 	}
-
 }
-
-
-
-
 
 
 

@@ -4,16 +4,7 @@
  *  Created on: Jan 17, 2024
  *      Author: A
  */
-//void systickDelayMs(int delay);
-#include <stdbool.h>
-#include "tim.h"
-void SysTick_Init(void);
-void SysTick_Handler(void);
-void delay (uint32_t T);
-void SysTick_Interrupt_Handler(void);
-uint32_t get_tick();
-extern volatile bool heartbeat;
-
+void systickDelayMs(int delay);
 #ifndef SYSTICK_H_
 #define SYSTICK_H_
 

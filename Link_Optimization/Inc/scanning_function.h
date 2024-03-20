@@ -13,10 +13,11 @@
 #include "uart.h"
 #include <stdint.h>
 #include "stm32f4xx.h"
-#include "Servo_Move.h"
 
 void scanning_function(void);
 
+extern int x;
+extern int y;
 
 
 #endif /* SCANNING_FUNCTION_H_ */
