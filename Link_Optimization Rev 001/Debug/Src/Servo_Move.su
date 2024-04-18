@@ -1,0 +1,4 @@
+../Src/Servo_Move.c:21:6:Motor_Position	4	static
+../Src/Servo_Move.c:37:6:control_X	4	static
+../Src/Servo_Move.c:45:6:control_Y	4	static
+../Src/Servo_Move.c:51:6:motor_control	72	static

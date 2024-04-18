@@ -1,0 +1,5 @@
+../Src/algorithm.c:31:5:random_index	16	static
+../Src/algorithm.c:36:13:Read_RSSI	24	static
+../Src/algorithm.c:60:7:averageRSSI_X	16	static
+../Src/algorithm.c:71:7:averageRSSI_Y	16	static
+../Src/algorithm.c:109:6:initializeGlobalVariables	8	static
